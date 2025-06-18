@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cidades - XYZ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      margin: 0;
+      padding: 50px 20px 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      color: #e0eaff;
+      transition: background 0.5s ease;
+    }
+
+    body::before {
+      content: '';
+      width: 280px;
+      height: 280px;
+      background: #3a78a8;
+      border-radius: 50%;
+      top: 20px;
+      left: -140px;
+      position: absolute;
+      transform: rotate(25deg);
+      filter: drop-shadow(0 0 20px rgba(58, 120, 168, 0.6));
+      animation: float 6s ease-in-out infinite;
+      opacity: 0.15;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    body::after {
+      content: '';
+      width: 180px;
+      height: 180px;
+      background: #15375b;
+      border-radius: 50%;
+      bottom: 40px;
+      right: -90px;
+      position: absolute;
+      filter: drop-shadow(0 0 15px rgba(21, 55, 91, 0.5));
+      animation: floatReverse 5s ease-in-out infinite;
+      opacity: 0.15;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .geom-circle {
+      width: 100px;
+      height: 100px;
+      background: #4a90e2;
+      border-radius: 50%;
+      top: 120px;
+      right: 40px;
+      position: absolute;
+      filter: drop-shadow(0 0 10px rgba(74, 144, 226, 0.7));
+      animation: float 7s ease-in-out infinite;
+      opacity: 0.15;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .geom-triangle {
+      width: 0;
+      height: 0;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+      border-bottom: 86.6px solid #224d8b;
+      top: 220px;
+      left: 50px;
+      position: absolute;
+      animation: floatReverse 8s ease-in-out infinite;
+      filter: drop-shadow(0 0 8px rgba(34, 77, 139, 0.6));
+      opacity: 0.15;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .geom-line {
+      width: 150px;
+      height: 8px;
+      background: #5a9bd5;
+      top: 60px;
+      left: 200px;
+      position: absolute;
+      transform: rotate(45deg);
+      border-radius: 4px;
+      filter: drop-shadow(0 0 8px rgba(90, 155, 213, 0.6));
+      animation: float 5.5s ease-in-out infinite;
+      opacity: 0.15;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(15deg); }
+      50% { transform: translateY(-15px) rotate(-15deg); }
+    }
+
+    @keyframes floatReverse {
+      0%, 100% { transform: translateY(0) rotate(-10deg); }
+      50% { transform: translateY(10px) rotate(10deg); }
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+      position: relative;
+      z-index: 2;
+      user-select: none;
+      transition: color 0.5s ease;
+    }
+
+    header h1 {
+      font-size: 4rem;
+      font-weight: 900;
+      color: #a3cdfd;
+      letter-spacing: 8px;
+      margin: 0;
+      text-shadow:
+     2px 2px 6px rgba(0, 0, 0, 1),
+     0 0 10px rgba(0, 0, 0, 1),
+      0 0 20px rgba(0, 0, 0, 1);
+ 
+      transition: color 0.5s ease;
+    }
+
+    header p {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #89aaff;
+      letter-spacing: 3px;
+      margin-top: 12px;
+      text-transform: uppercase;
+      text-shadow:
+     1px 1px 4px rgba(0, 0, 0, 1),
+     0 0 6px rgba(0, 0, 0, 1);
+
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 100px 120px;
+      max-width: 1100px;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+      justify-items: center;
+    }
+
+    .centered-card {
+      grid-column: 1 / span 2;
+      justify-self: center;
+    }
+
+    a.card {
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      color: #e0eaff;
+      padding: 0;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(33, 85, 150, 0.25);
+      text-align: center;
+      text-decoration: none;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      height: 250px;
+      width: 383px;
+      overflow: hidden;
+    }
+
+    a.card:hover {
+      transform: translateY(-14px) scale(1.05);
+      box-shadow: 0 18px 36px rgba(33, 85, 150, 0.4);
+      color: #d1eaff;
+    }
+
+    .cidade {
+      font-weight: 800;
+      font-size: 24px;
+      margin: 12px 0;
+      padding: 6px 14px;
+      background: rgba(20, 41, 75, 0.7);
+      border-radius: 14px;
+      text-shadow: 1px 1px 3px #000;
+      user-select: none;
+      max-width: 90%;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+      z-index: 2;
+    }
+
+    a.card:hover .cidade {
+      color: #a9d1ff;
+      text-shadow:
+        0 0 8px #a9d1ff,
+        0 0 12px #89aaff,
+        0 0 15px #4a90e2;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 60px 0;
+      }
+
+      a.card {
+        width: 90vw;
+        height: 60vw;
+      }
+
+      .centered-card {
+        grid-column: auto;
+        justify-self: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>XYZ</h1>
+    <p>MELHOR GUIA PARA SUA VIAGEM</p>
+  </header>
+
+  <div class="geom-circle"></div>
+  <div class="geom-triangle"></div>
+  <div class="geom-line"></div>
+
+  <div class="grid">
+    <a
+      class="card"
+      href="ilicinea.html"
+      target="_blank"
+      rel="noopener noreferrer"
+      style="background-image: url('scr/numero1.jpg');"
+      data-city="ilicinea"
+    >
+      <span class="cidade">Ilicínea</span>
+    </a>
+
+    <a
+      class="card"
+      href="varginha.html"
+      target="_blank"
+      rel="noopener noreferrer"
+      style="background-image: url('scr/numero2.png');"
+      data-city="varginha"
+    >
+      <span class="cidade">Varginha</span>
+    </a>
+
+    <a
+      class="card centered-card"
+      href="guape.html"
+      target="_blank"
+      rel="noopener noreferrer"
+      style="background-image: url('scr/numero3.png');"
+      data-city="guape"
+    >
+      <span class="cidade">Guapé</span>
+    </a>
+  </div>
+
+  <script>
+    const body = document.body;
+    const headerTitle = document.querySelector('header h1');
+
+    const backgrounds = {
+      default: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
+      varginha: 'linear-gradient(135deg, #1e5128 0%, #3a7e22 100%)',
+      ilicinea: 'linear-gradient(135deg, #f2c14e 0%, #f7d488 100%)',
+      'boa-esperanca': 'linear-gradient(135deg, #f7cac9 0%, #f4d6e0 100%)',
+      guape: 'linear-gradient(135deg, #b94e48 0%, #7a2e2e 100%)',
+    };
+
+    const headerColors = {
+      default: '#a3cdfd',
+      varginha: '#b6e388',
+      ilicinea: '#f7e36a',
+      'boa-esperanca': '#f9a8b8',
+      guape: '#d97979',
+    };
+
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        const city = card.getAttribute('data-city');
+        body.style.background = backgrounds[city] || backgrounds.default;
+        headerTitle.style.color = headerColors[city] || headerColors.default;
+      });
+      card.addEventListener('mouseleave', () => {
+        body.style.background = backgrounds.default;
+        headerTitle.style.color = headerColors.default;
+      });
+    });
+  </script>
+
+  <footer>
+    &copy; Direitos Reservados - IW
+  </footer>
+
+</body>
+</html>
